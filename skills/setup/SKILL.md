@@ -1,7 +1,7 @@
 ---
 disable-model-invocation: true
 name: setup
-description: Configure time-tracking for your billing models, calendar tagging conventions, and invoice preferences. Auto-fires on "/setup-time", "set up time tracking", "configure my billing rates", "add a client to time tracking", "update my billing setup", or when /track-time or /generate-invoices reports user-context.md is missing.
+description: Admin. Configure time-tracking for your billing models, calendar tagging conventions, and invoice preferences. Auto-fires on "/setup-time", "set up time tracking", "configure my billing rates", "add a client to time tracking", "update my billing setup", or when /track-time or /invoices reports user-context.md is missing.
 ---
 
 <!-- OPENAI-ADAPTER:START -->
@@ -20,7 +20,7 @@ See `commands/setup-time.md` for the full interview.
 
 - User runs `/setup-time` directly
 - User says: "set up time tracking", "configure my billing", "add a client", "update my billing setup"
-- The `/track-time` or `/generate-invoices` command reports user-context.md is missing → auto-route here
+- The `/track-time` or `/invoices` command reports user-context.md is missing → auto-route here
 
 ## Quick path
 

@@ -1,6 +1,6 @@
-# time-tracking user context (TEMPLATE)
+# admin user context (TEMPLATE)
 
-_Run `/setup-time` to generate your real `<config-root>/plugins/time-tracking.user-context.md` (gitignored)._
+_Run `/setup-time` to generate your real `<config-root>/plugins/admin.user-context.md` (gitignored)._
 
 _Last updated: [filled by setup]_
 

@@ -4,6 +4,15 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.3.0] — Renamed to Admin; /invoices primary command (2026-09-15)
+
+Renamed from `time-tracking` to `admin` (display name: Admin) as part of the
+2026-09-15 Nucleus plugin rename. Old plugin ID/repo name redirects; see
+marketplace catalog.
+
+### Changed
+- `/generate-invoices` renamed to `/invoices` as the primary command. `/generate-invoices` remains as a deprecated thin alias that delegates to `/invoices`.
+
 ## [0.2.8] — Delivery integration cleanup (2026-09-15)
 
 ### Changed

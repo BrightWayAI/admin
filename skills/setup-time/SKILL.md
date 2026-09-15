@@ -1,7 +1,7 @@
 ---
 disable-model-invocation: true
 name: setup-time
-description: "Configure time-tracking for your billing models, calendar tagging conventions, and invoice preferences. Captures clients with rates, categories, rounding rules, and invoice templates. Re-run anytime to add or update clients."
+description: "Admin. Configure time-tracking for your billing models, calendar tagging conventions, and invoice preferences. Captures clients with rates, categories, rounding rules, and invoice templates. Re-run anytime to add or update clients."
 ---
 
 # setup-time

@@ -1,5 +1,5 @@
 ---
-description: Configure time-tracking for your billing models, calendar tagging conventions, and invoice preferences. Captures clients with rates, categories, rounding rules, and invoice templates. Re-run anytime to add or update clients.
+description: Admin. Configure time-tracking for your billing models, calendar tagging conventions, and invoice preferences. Captures clients with rates, categories, rounding rules, and invoice templates. Re-run anytime to add or update clients.
 ---
 
 # /setup-time
@@ -19,18 +19,18 @@ plugin-specific pointer.
 
 Read `<config-root>/memory/me/identity.md`. If populated, pre-fill company name, your name (for invoices), time zone, primary calendar. If missing, offer `/setup-identity` first or proceed inline.
 
-For the rest of this document, **`<config-root>`** refers to the resolved path. This plugin's config file lives at **`<config-root>/plugins/time-tracking.user-context.md`** and the time log at **`<config-root>/time-log.csv`**.
+For the rest of this document, **`<config-root>`** refers to the resolved path. This plugin's config file lives at **`<config-root>/plugins/admin.user-context.md`** and the time log at **`<config-root>/time-log.csv`**.
 
 ---
 
 ## Step 1 — Check existing config
 
-Read `<config-root>/plugins/time-tracking.user-context.md`. Populated → ask whether to update or restart. Missing → fresh interview.
+Read `<config-root>/plugins/admin.user-context.md`. Populated → ask whether to update or restart. Missing → fresh interview.
 
-If `<config-root>/plugins/delivery.user-context.md` has populated engagements, offer:
-> "I see active Delivery engagements: [list]. Want to import those as billing-tracked clients? I'll just need rates and billing models for each."
+If `<config-root>/plugins/clients.user-context.md` has populated engagements, offer:
+> "I see active Client Success engagements: [list]. Want to import those as billing-tracked clients? I'll just need rates and billing models for each."
 
-If yes → use Delivery data as the client list, ask for billing models per client. If no → capture clients fresh in Section 2.
+If yes → use Client Success data as the client list, ask for billing models per client. If no → capture clients fresh in Section 2.
 
 ---
 
@@ -38,7 +38,7 @@ If yes → use Delivery data as the client list, ask for billing models per clie
 
 For each active client, capture:
 
-- **Client name** (matches the name in your CRM and Delivery config)
+- **Client name** (matches the name in your CRM and Client Success config)
 - **Client domain(s)** (for attendee-domain matching, e.g., `acme.com`)
 - **Project tag** in calendar (e.g., `[ACME]` prefix in event titles, or a project name)
 - **Billing model** — pick one:
@@ -91,7 +91,7 @@ Note: padding is opinionated. Some clients accept it, others don't. Default off.
 
 ## Step 6 — Invoice preferences
 
-- **Invoice template** — immutable default at `references/templates/invoice-template.md`; customized copies live at `<config-root>/plugins/time-tracking/templates/invoice-template.md`
+- **Invoice template** — immutable default at `references/templates/invoice-template.md`; customized copies live at `<config-root>/plugins/admin/templates/invoice-template.md`
 - **Net terms** — net 0 (due on receipt) / net 7 / net 14 / net 30 (default net 14)
 - **Invoice numbering** — start number, format (e.g., `INV-2026-001`, `BWA-25-04`, etc.)
 - **Tax** — do you charge sales tax / GST / VAT? If yes: rate and basis
@@ -109,7 +109,7 @@ Note: padding is opinionated. Some clients accept it, others don't. Default off.
 
 ## Step 8 — Write the config
 
-Populate `<config-root>/plugins/time-tracking.user-context.md` with everything captured. Use the `references/user-context.template.md` structure.
+Populate `<config-root>/plugins/admin.user-context.md` with everything captured. Use the `references/user-context.template.md` structure.
 
 ---
 
@@ -126,4 +126,4 @@ Summarize. Offer:
 - One section at a time. Don't flood.
 - Capture clients one at a time — important to get the rates right.
 - Idempotent. Re-running adds new clients or updates existing ones.
-- If Delivery is configured, prefer importing client data from there to avoid drift.
+- If Client Success is configured, prefer importing client data from there to avoid drift.

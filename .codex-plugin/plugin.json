@@ -1,7 +1,7 @@
 {
-  "name": "time-tracking",
-  "version": "0.2.8",
-  "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+  "name": "admin",
+  "version": "0.3.0",
+  "description": "Admin. Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
   "author": {
     "name": "BrightWay AI",
     "url": "https://brightwayai.com"
@@ -16,7 +16,7 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Time Tracking",
+    "displayName": "Admin",
     "shortDescription": "Classify calendar time and prepare reviewable invoices",
     "longDescription": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
     "developerName": "BrightWay AI",

@@ -10,10 +10,10 @@ Pull calendar → classify → log billable time. Closes the gap between "what y
 
 ## Step 0 — Preflight
 
-Read `<config-root>/plugins/time-tracking.user-context.md`. If missing, route to `/setup-time` and stop.
+Read `<config-root>/plugins/admin.user-context.md`. If missing, route to `/setup-time` and stop.
 
 Also read shared identity at `<config-root>/memory/me/identity.md` (calendar tool,
-time zone). If `<config-root>/plugins/delivery.user-context.md` exists, read it for
+time zone). If `<config-root>/plugins/clients.user-context.md` exists, read it for
 active engagement data (client names, contract values, project tags).
 
 Extract from this plugin's user-context:
@@ -142,7 +142,7 @@ This [window]:
 This month so far:
 - Billable: [running total per client]
 
-Run /generate-invoices on [next-month-date] to bill what's logged.
+Run /invoices on [next-month-date] to bill what's logged.
 ```
 
 ---

@@ -1,4 +1,4 @@
-# time-tracking
+# Admin
 
 Calendar-driven time tracking and invoice generation for solo consultants and small agencies.
 
@@ -7,7 +7,7 @@ The pain: you do the work, your calendar reflects it, and then you either spend 
 ## What it does
 
 1. **`/track-time`** (daily or weekly) — pulls calendar events, classifies each as billable / non-billable / unknown by client, prompts for confirmation, and logs to `<config-root>/time-log.csv` by default.
-2. **`/generate-invoices`** (monthly) — reads the time log, groups by client, calculates totals against your billing model, drafts invoices. Hands off to your existing invoice tool (e.g., `anthropic-skills:invoice`) or generates docx/pdf directly.
+2. **`/invoices`** (monthly) — reads the time log, groups by client, calculates totals against your billing model, drafts invoices. Hands off to your existing invoice tool (e.g., `anthropic-skills:invoice`) or generates docx/pdf directly. (`/generate-invoices` is a deprecated alias that delegates here.)
 
 ## Install
 
@@ -15,7 +15,7 @@ Recommended: via the [BrightWayAI marketplace](https://github.com/BrightWayAI/nu
 
 ```
 /plugin marketplace add BrightWayAI/nucleus
-/plugin install time-tracking@nucleus
+/plugin install admin@nucleus
 ```
 
 ## First-time setup
@@ -28,14 +28,14 @@ Run `/setup-time`. The interview captures:
 - **Default block rounding** — round to 15 min, 30 min, or actual
 - **Invoice preferences** — template, due-on-receipt vs net-30, where to deliver (email / portal / Drive folder)
 
-Saved to `<config-root>/plugins/time-tracking.user-context.md`.
+Saved to `<config-root>/plugins/admin.user-context.md`.
 
 ## Companion plugins
 
-- **Delivery** — provides engagement data (client name, contract value, deliverables, start/end dates). When configured, time-tracking imports billing context rather than re-asking.
-- **`claude-cortex`** — captures time-related observations ("Acme calls always run 15 min over") into memory.
-- **`brightway-core`** — pipeline-analyst can surface deal value alongside billable time for a "where am I making money vs. spending time" view.
-- **Anthropic skills (`invoice`, `docx`)** — `/generate-invoices` can hand off to these for final invoice document production.
+- **Client Success** — provides engagement data (client name, contract value, deliverables, start/end dates). When configured, Admin imports billing context rather than re-asking.
+- **`cortex`** — captures time-related observations ("Acme calls always run 15 min over") into memory.
+- **`ops`** — pipeline-analyst can surface deal value alongside billable time for a "where am I making money vs. spending time" view.
+- **Anthropic skills (`invoice`, `docx`)** — `/invoices` can hand off to these for final invoice document production.
 
 Works without companions, but the integrations make billing more accurate.
 
@@ -45,11 +45,12 @@ Works without companions, but the integrations make billing more accurate.
 .claude-plugin/plugin.json
 commands/
   track-time.md             Daily/weekly calendar → time-log
-  generate-invoices.md      Monthly time-log → invoice drafts
+  invoices.md               Monthly time-log → invoice drafts
+  generate-invoices.md      Deprecated alias → /invoices
   setup-time.md             Interview
 skills/
   track-time/SKILL.md       Auto-fires on time-tracking phrases
-  generate-invoices/SKILL.md Auto-fires on invoice phrases
+  invoices/SKILL.md         Auto-fires on invoice phrases
   setup/SKILL.md            Auto-fires on setup phrases
 references/
   user-context.template.md  Structure (committed)
@@ -75,9 +76,9 @@ Hand-editable. Backup-friendly. Works offline. The plugin reads + appends; never
 <!-- OPENAI-SUPPORT:START -->
 ## ChatGPT and Codex
 
-Time Tracking ships as a native OpenAI plugin as well as a Claude plugin. In
-ChatGPT desktop Local Work, enable **Time Tracking** and ask naturally or mention
-`@Time Tracking`. In Codex, use natural language or the namespaced skills exposed
+Admin ships as a native OpenAI plugin as well as a Claude plugin. In
+ChatGPT desktop Local Work, enable **Admin** and ask naturally or mention
+`@Admin`. In Codex, use natural language or the namespaced skills exposed
 by the plugin. Claude slash-command names in this README remain workflow aliases.
 
 All hosts resolve the same `<config-root>` used by Cortex, so Claude, ChatGPT desktop,

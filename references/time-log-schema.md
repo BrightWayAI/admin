@@ -23,7 +23,7 @@ date,start,end,duration_min,client,project,category,billable,description,invoice
 | `category` | string | yes | One of the categories from user-context (`client-work`, `internal`, `bizdev`, `learning`, `personal`, etc.) |
 | `billable` | boolean | yes | `true` or `false` |
 | `description` | string | yes | What the time was for (≤120 chars; the calendar event title + key context) |
-| `invoiced` | boolean | yes | `false` until `/generate-invoices` runs and bills it; then `true` |
+| `invoiced` | boolean | yes | `false` until `/invoices` runs and bills it; then `true` |
 
 ### Quoting rules
 
@@ -44,7 +44,7 @@ Standard CSV quoting:
 ### Append-only
 
 `/track-time` only appends. It never modifies existing rows except:
-- `/generate-invoices` flips `invoiced` from `false` to `true` after billing the row.
+- `/invoices` flips `invoiced` from `false` to `true` after billing the row.
 - Manual edits by the user (in a CSV editor or text editor) are fine — the plugin doesn't enforce structure beyond reading what's there.
 
 ### Backups

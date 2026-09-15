@@ -2,18 +2,18 @@
 
 ## What this plugin does with your data
 
-Time Tracking pulls calendar events to classify billable time and produce monthly invoices. Read-only against the calendar; writes a local time-log file plus invoice drafts.
+Admin pulls calendar events to classify billable time and produce monthly invoices. Read-only against the calendar; writes a local time-log file plus invoice drafts.
 
 **Reads:**
 - **Calendar** — events in the target window (yesterday / last week / specified range). Captures: date, start/end, duration, title, attendees, description.
-- **Delivery settings** (if configured) — engagement data (client names, contract values, project tags) for billing context.
-- **Time log** — `<config-root>/time-log.csv` by default for `/generate-invoices` and deduplication.
-- **Plugin settings and templates** — `<config-root>/plugins/time-tracking.user-context.md`, optional user template override, and the immutable bundled starter.
+- **Client Success settings** (if configured) — engagement data (client names, contract values, project tags) for billing context.
+- **Time log** — `<config-root>/time-log.csv` by default for `/invoices` and deduplication.
+- **Plugin settings and templates** — `<config-root>/plugins/admin.user-context.md`, optional user template override, and the immutable bundled starter.
 - **Shared private profile** — `<config-root>/memory/me/identity.md` (read-only).
 
 **Writes:**
-- **Time log** — `<config-root>/time-log.csv` by default (append-only by `/track-time`; `/generate-invoices` flips the `invoiced` flag from `false` to `true` for billed rows). The user can manually edit the CSV.
-- **Plugin settings** — `<config-root>/plugins/time-tracking.user-context.md` (after `/setup-time`).
+- **Time log** — `<config-root>/time-log.csv` by default (append-only by `/track-time`; `/invoices` flips the `invoiced` flag from `false` to `true` for billed rows). The user can manually edit the CSV.
+- **Plugin settings** — `<config-root>/plugins/admin.user-context.md` (after `/setup-time`).
 - **Invoice drafts** — produced inline for review. Optionally handed to `anthropic-skills:invoice` or `docx` for final document creation; this plugin doesn't write the final docx.
 
 **Does not:**

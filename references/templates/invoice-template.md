@@ -2,7 +2,7 @@
 
 _Edit this template to match your firm's invoice format. The starter is generic._
 
-When `/generate-invoices` runs, it produces a structured invoice draft using this template. Replace `[bracketed]` fields with actual values.
+When `/invoices` runs, it produces a structured invoice draft using this template. Replace `[bracketed]` fields with actual values.
 
 ---
 
@@ -78,7 +78,7 @@ Thank you for your business.
 ## Customizing this template
 
 Common edits:
-- **Brand styling** — if your firm has brand colors, font choices, etc., the docx skill (when called by `/generate-invoices`) can apply them on conversion. Adjust the brand-pass logic in your firm's `core-ops` user-context if applicable.
+- **Brand styling** — if your firm has brand colors, font choices, etc., the docx skill (when called by `/invoices`) can apply them on conversion. Adjust the brand-pass logic in your firm's `ops` user-context if applicable.
 - **Tax rules** — different jurisdictions and product types have different rules. Edit the line-item formula and tax line accordingly.
 - **Multi-currency** — if you bill in multiple currencies, add currency to the user-context's per-client config and update the template to render the currency code.
 - **Logo / signature image** — handled at docx-conversion time, not in this markdown template.
