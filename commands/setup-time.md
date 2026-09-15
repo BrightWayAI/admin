@@ -27,7 +27,7 @@ Then:
 
 ### C — Read shared identity
 
-Read `<config-root>/identity.md`. If populated, pre-fill company name, your name (for invoices), time zone, primary calendar. If missing, offer `/setup-identity` first or proceed inline.
+Read `<config-root>/memory/me/identity.md`. If populated, pre-fill company name, your name (for invoices), time zone, primary calendar. If missing, offer `/setup-identity` first or proceed inline.
 
 For the rest of this document, **`<config-root>`** refers to the resolved path. This plugin's config file lives at **`<config-root>/plugins/time-tracking.user-context.md`** and the time log at **`<config-root>/time-log.csv`**.
 
