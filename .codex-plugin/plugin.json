@@ -1,6 +1,6 @@
 {
   "name": "time-tracking",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
   "author": {
     "name": "BrightWay AI",

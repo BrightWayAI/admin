@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: setup
 description: Configure time-tracking for your billing models, calendar tagging conventions, and invoice preferences. Auto-fires on "/setup-time", "set up time tracking", "configure my billing rates", "add a client to time tracking", "update my billing setup", or when /track-time or /generate-invoices reports user-context.md is missing.
 ---
