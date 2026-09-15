@@ -4,6 +4,11 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.2.7] — Codex adapter synchronization (2026-09-15)
+
+### Fixed
+- Synchronized the Codex manifest with the current plugin version.
+
 ## [0.2.6] — Skill auto-invocation audit (2026-09-15)
 
 Nucleus Operating Model Refactor Phase 3 step 3.7. Ritual and side-effecting
