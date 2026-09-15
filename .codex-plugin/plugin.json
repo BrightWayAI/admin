@@ -1,0 +1,35 @@
+{
+  "name": "time-tracking",
+  "version": "0.2.4",
+  "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+  "author": {
+    "name": "BrightWay AI",
+    "url": "https://brightwayai.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/BrightWayAI/time-tracking",
+  "repository": "https://github.com/BrightWayAI/time-tracking",
+  "keywords": [
+    "nucleus",
+    "chatgpt",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Time Tracking",
+    "shortDescription": "Classify calendar time and prepare reviewable invoices",
+    "longDescription": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+    "developerName": "BrightWay AI",
+    "category": "Business",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/BrightWayAI/time-tracking",
+    "defaultPrompt": [
+      "Track yesterday's billable time.",
+      "Generate this month's invoice drafts.",
+      "Configure my billing rules."
+    ]
+  }
+}

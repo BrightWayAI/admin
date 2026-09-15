@@ -72,6 +72,26 @@ date,start,end,duration_min,client,project,category,billable,description,invoice
 
 Hand-editable. Backup-friendly. Works offline. The plugin reads + appends; never destroys.
 
+<!-- OPENAI-SUPPORT:START -->
+## ChatGPT and Codex
+
+Time Tracking ships as a native OpenAI plugin as well as a Claude plugin. In
+ChatGPT desktop Local Work, enable **Time Tracking** and ask naturally or mention
+`@Time Tracking`. In Codex, use natural language or the namespaced skills exposed
+by the plugin. Claude slash-command names in this README remain workflow aliases.
+
+All hosts resolve the same `<config-root>` used by Cortex, so Claude, ChatGPT desktop,
+and Codex can share identity, voice, memory, and per-plugin settings without copying
+them. The installed plugin directory is read-only at runtime. See
+[`references/openai-portability.md`](references/openai-portability.md) for capability
+mapping, connector checks, permissions, and honest degraded behavior.
+
+Import the full catalog from
+[`BrightWayAI/nucleus`](https://github.com/BrightWayAI/nucleus); Nucleus is the master
+marketplace, while each plugin remains independently installable.
+<!-- OPENAI-SUPPORT:END -->
+
+
 ## License
 
 MIT.
