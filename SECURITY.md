@@ -6,14 +6,14 @@ Time Tracking pulls calendar events to classify billable time and produce monthl
 
 **Reads:**
 - **Calendar** — events in the target window (yesterday / last week / specified range). Captures: date, start/end, duration, title, attendees, description.
-- **Project Setup** (if installed) — engagement data (client names, contract values, project tags) for billing-context.
-- **Time log** — `~/Documents/Claude/time-log.csv` for `/generate-invoices` and to dedupe `/track-time` runs.
-- **Plugin references** — `references/user-context.md` (clients, billing models, calendar tagging, invoice prefs), `references/templates/invoice-template.md`.
-- **Shared user-level config** — `~/Documents/Claude/identity.md` (read-only).
+- **Delivery settings** (if configured) — engagement data (client names, contract values, project tags) for billing context.
+- **Time log** — `<config-root>/time-log.csv` by default for `/generate-invoices` and deduplication.
+- **Plugin settings and templates** — `<config-root>/plugins/time-tracking.user-context.md`, optional user template override, and the immutable bundled starter.
+- **Shared private profile** — `<config-root>/memory/me/identity.md` (read-only).
 
 **Writes:**
-- **Time log** — `~/Documents/Claude/time-log.csv` (append-only by `/track-time`; `/generate-invoices` flips the `invoiced` flag from `false` to `true` for billed rows). The user can manually edit the CSV.
-- **Plugin user-context** — `references/user-context.md` (after `/setup-time`).
+- **Time log** — `<config-root>/time-log.csv` by default (append-only by `/track-time`; `/generate-invoices` flips the `invoiced` flag from `false` to `true` for billed rows). The user can manually edit the CSV.
+- **Plugin settings** — `<config-root>/plugins/time-tracking.user-context.md` (after `/setup-time`).
 - **Invoice drafts** — produced inline for review. Optionally handed to `anthropic-skills:invoice` or `docx` for final document creation; this plugin doesn't write the final docx.
 
 **Does not:**
@@ -21,13 +21,13 @@ Time Tracking pulls calendar events to classify billable time and produce monthl
 - **Send invoices.** Drafts only; user reviews and sends manually (or via their billing tool).
 - **Modify CRM.** No CRM writes.
 - **Track payment status.** Once an invoice is generated, the plugin doesn't follow up on payment.
-- **Send time-log data anywhere.** The log lives at `~/Documents/Claude/time-log.csv` on your machine.
+- **Send time-log data anywhere.** The log lives at its configured local path.
 
 ## Where data lives
 
-- Plugin reference files inside the installed plugin directory.
-- Time log as plain CSV at `~/Documents/Claude/time-log.csv`. **This file contains client names, hours, descriptions, and dollar amounts — back it up like other sensitive financial records.**
-- Shared identity (read-only) at `~/Documents/Claude/identity.md`.
+- Immutable plugin references inside the installed plugin directory.
+- Time log as plain CSV at `<config-root>/time-log.csv` by default. **This file contains client names, hours, descriptions, and dollar amounts — back it up like other sensitive financial records.**
+- Shared identity (read-only) at `<config-root>/memory/me/identity.md`.
 
 ## What gets sent off your machine
 
@@ -45,7 +45,7 @@ The time log is **local plain-text CSV**. It contains:
 
 It does **not** contain message content, contact emails, or external integration tokens.
 
-If you fork this plugin or share your machine, treat `~/Documents/Claude/time-log.csv` as confidential.
+If you fork this plugin or share your machine, treat the configured time-log CSV as confidential.
 
 ## Supported versions
 

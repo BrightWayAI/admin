@@ -4,6 +4,12 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.2.8] — Delivery integration cleanup (2026-09-15)
+
+### Changed
+- Replaced retired project-setup dependencies and direct Cowork identity paths with canonical Delivery and Cortex paths.
+- Moved invoice template customizations to user-owned config-root state.
+
 ## [0.2.7] — Codex adapter synchronization (2026-09-15)
 
 ### Fixed

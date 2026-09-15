@@ -15,7 +15,7 @@ Read `<config-root>/plugins/time-tracking.user-context.md`. Extract:
 - Invoice preferences (template, due-on-receipt vs net-30, delivery channel)
 - Time-log file path (default `<config-root>/time-log.csv`)
 
-If `project-setup` is installed, also read its user-context for current contract values and engagement names.
+If `<config-root>/plugins/delivery.user-context.md` exists, also read it for current contract values and engagement names.
 
 ---
 
@@ -56,7 +56,7 @@ For each client:
 - If hours > cap: flag overage, calculate per overage rate (if defined)
 
 ### Flat fee project
-- Reference project-setup's contract value
+- Reference Delivery's contract value
 - If invoicing is milestone-based: identify which milestone closed this period and bill accordingly
 - Otherwise: bill the agreed-upon monthly portion (e.g., contract / engagement-duration months)
 
@@ -64,13 +64,15 @@ For each client:
 
 ## Step 4 — Draft invoices
 
-For each client, produce a structured draft using `references/templates/invoice-template.md` as the format.
+For each client, prefer the user-owned
+`<config-root>/plugins/time-tracking/templates/invoice-template.md`; otherwise use
+the immutable `references/templates/invoice-template.md` default.
 
 Structure:
 - Invoice number (auto-increment from last invoiced number — track in user-context or derive from time-log)
 - Date issued + due date (per net terms)
-- Client info (name, billing email/address — from project-setup or user-context)
-- Your info (from `~/Documents/Claude/identity.md`)
+- Client info (name, billing email/address — from Delivery or time-tracking user-context)
+- Your info (from `<config-root>/memory/me/identity.md`)
 - Line items (per Step 3 calculation)
 - Subtotal, taxes if applicable, total
 - Payment terms + payment instructions (from user-context)

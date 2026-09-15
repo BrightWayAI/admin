@@ -6,7 +6,7 @@ The pain: you do the work, your calendar reflects it, and then you either spend 
 
 ## What it does
 
-1. **`/track-time`** (daily or weekly) — pulls calendar events, classifies each as billable / non-billable / unknown by client, prompts for confirmation, logs to `~/Documents/Claude/time-log.csv`.
+1. **`/track-time`** (daily or weekly) — pulls calendar events, classifies each as billable / non-billable / unknown by client, prompts for confirmation, and logs to `<config-root>/time-log.csv` by default.
 2. **`/generate-invoices`** (monthly) — reads the time log, groups by client, calculates totals against your billing model, drafts invoices. Hands off to your existing invoice tool (e.g., `anthropic-skills:invoice`) or generates docx/pdf directly.
 
 ## Install
@@ -28,11 +28,11 @@ Run `/setup-time`. The interview captures:
 - **Default block rounding** — round to 15 min, 30 min, or actual
 - **Invoice preferences** — template, due-on-receipt vs net-30, where to deliver (email / portal / Drive folder)
 
-Saved to `references/user-context.md` (gitignored).
+Saved to `<config-root>/plugins/time-tracking.user-context.md`.
 
 ## Companion plugins
 
-- **`project-setup`** — provides engagement data (client name, contract value, deliverables, start/end dates). When installed, time-tracking infers client billing context from project-setup rather than re-asking.
+- **Delivery** — provides engagement data (client name, contract value, deliverables, start/end dates). When configured, time-tracking imports billing context rather than re-asking.
 - **`claude-cortex`** — captures time-related observations ("Acme calls always run 15 min over") into memory.
 - **`brightway-core`** — pipeline-analyst can surface deal value alongside billable time for a "where am I making money vs. spending time" view.
 - **Anthropic skills (`invoice`, `docx`)** — `/generate-invoices` can hand off to these for final invoice document production.
@@ -56,12 +56,12 @@ references/
   user-context.md           Your config (gitignored, created by setup)
   time-log-schema.md        Documentation of the time-log file format
   templates/
-    invoice-template.md     Starter invoice template (user-editable)
+    invoice-template.md     Immutable starter invoice template
 ```
 
 ## The time-log file
 
-Lives at `~/Documents/Claude/time-log.csv` by default (configurable in setup). Plain CSV for portability:
+Lives at `<config-root>/time-log.csv` by default (configurable in setup). Plain CSV for portability:
 
 ```csv
 date,start,end,duration_min,client,project,category,billable,description,invoiced

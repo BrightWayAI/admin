@@ -10,22 +10,12 @@ Short interview that captures what time-tracking needs to classify your calendar
 
 ## Step 0 — Resolve plugin config root
 
-Per-plugin config in this marketplace lives under a user-chosen folder, recorded at `~/Documents/.claude-plugin-config-root` (single-line text file in the user's home).
+Resolve explicit override → `CORTEX_CONFIG_ROOT` → `~/.cortex/config-root` →
+legacy pointer → default. Request access only to the resolved directory. If no root
+has been intentionally configured, route to Cortex setup instead of creating a
+plugin-specific pointer.
 
-### A — Try the pointer
-
-Ensure access to `~/Documents`. In Cowork, call `request_cowork_directory(~/Documents)` once if not already granted. In Claude Code (or any environment with direct filesystem access), no mount is needed. Then read `~/Documents/.claude-plugin-config-root`.
-- **Exists**: read line 1 → that's the config root path. Ensure access to `<config-root>`. If running in Cowork and the folder isn't already mounted in this session, call `request_cowork_directory(<config-root>)`. If running in Claude Code or another environment with direct filesystem access, no mount call is needed. Skip to section C.
-- **Missing**: continue to section B.
-
-### B — First-time bootstrap
-
-Prompt: "First-time plugin setup. Where should I store your plugin config — identity, voice, and per-plugin settings? Pick a folder you control (e.g., `~/Documents/Claude/` or `~/Documents/PluginConfig/`). The folder will hold `identity.md`, `voice.md`, and a `plugins/` subdirectory."
-
-Then:
-1. Ensure access to `<path>`. If running in Cowork and the folder isn't already mounted in this session, call `request_cowork_directory(<path>)`. If running in Claude Code or another environment with direct filesystem access, no mount call is needed. Create `<path>/plugins/`. Write absolute path to `~/Documents/.claude-plugin-config-root`.
-
-### C — Read shared identity
+### Read shared identity
 
 Read `<config-root>/memory/me/identity.md`. If populated, pre-fill company name, your name (for invoices), time zone, primary calendar. If missing, offer `/setup-identity` first or proceed inline.
 
@@ -37,10 +27,10 @@ For the rest of this document, **`<config-root>`** refers to the resolved path. 
 
 Read `<config-root>/plugins/time-tracking.user-context.md`. Populated → ask whether to update or restart. Missing → fresh interview.
 
-If `project-setup` is installed and has populated client engagements, offer:
-> "I see you have active engagements in project-setup: [list]. Want to import those as billing-tracked clients? I'll just need rates and billing models for each."
+If `<config-root>/plugins/delivery.user-context.md` has populated engagements, offer:
+> "I see active Delivery engagements: [list]. Want to import those as billing-tracked clients? I'll just need rates and billing models for each."
 
-If yes → use project-setup data as the client list, ask for billing models per client. If no → capture clients fresh in Section 2.
+If yes → use Delivery data as the client list, ask for billing models per client. If no → capture clients fresh in Section 2.
 
 ---
 
@@ -48,7 +38,7 @@ If yes → use project-setup data as the client list, ask for billing models per
 
 For each active client, capture:
 
-- **Client name** (matches the name in your CRM and project-setup)
+- **Client name** (matches the name in your CRM and Delivery config)
 - **Client domain(s)** (for attendee-domain matching, e.g., `acme.com`)
 - **Project tag** in calendar (e.g., `[ACME]` prefix in event titles, or a project name)
 - **Billing model** — pick one:
@@ -101,12 +91,12 @@ Note: padding is opinionated. Some clients accept it, others don't. Default off.
 
 ## Step 6 — Invoice preferences
 
-- **Invoice template** — default included; `references/templates/invoice-template.md` is editable
+- **Invoice template** — immutable default at `references/templates/invoice-template.md`; customized copies live at `<config-root>/plugins/time-tracking/templates/invoice-template.md`
 - **Net terms** — net 0 (due on receipt) / net 7 / net 14 / net 30 (default net 14)
 - **Invoice numbering** — start number, format (e.g., `INV-2026-001`, `BWA-25-04`, etc.)
 - **Tax** — do you charge sales tax / GST / VAT? If yes: rate and basis
 - **Delivery method** — email / client portal / Drive folder upload
-- **From address** — your billing address (or "from identity" if `~/Documents/Claude/identity.md` has it)
+- **From address** — your billing address (or "from identity" if `<config-root>/memory/me/identity.md` has it)
 - **Payment instructions** — Stripe link / wire / check / ACH details
 
 ---
@@ -136,4 +126,4 @@ Summarize. Offer:
 - One section at a time. Don't flood.
 - Capture clients one at a time — important to get the rates right.
 - Idempotent. Re-running adds new clients or updates existing ones.
-- If project-setup is installed, prefer importing client data from there to avoid drift.
+- If Delivery is configured, prefer importing client data from there to avoid drift.

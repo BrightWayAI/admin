@@ -12,7 +12,9 @@ Pull calendar → classify → log billable time. Closes the gap between "what y
 
 Read `<config-root>/plugins/time-tracking.user-context.md`. If missing, route to `/setup-time` and stop.
 
-Also read shared identity at `~/Documents/Claude/identity.md` (calendar tool, time zone). And, if `project-setup` is installed and has populated user-context, read that for active engagement data (client names, contract values, project tags).
+Also read shared identity at `<config-root>/memory/me/identity.md` (calendar tool,
+time zone). If `<config-root>/plugins/delivery.user-context.md` exists, read it for
+active engagement data (client names, contract values, project tags).
 
 Extract from this plugin's user-context:
 - Active clients + billing models (hourly rate / retainer / flat fee)
