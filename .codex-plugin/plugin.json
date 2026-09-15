@@ -1,14 +1,14 @@
 {
   "name": "admin",
-  "version": "0.3.0",
-  "description": "Admin. Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+  "version": "0.4.1",
+  "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
   "author": {
     "name": "BrightWay AI",
     "url": "https://brightwayai.com"
   },
   "license": "MIT",
-  "homepage": "https://github.com/BrightWayAI/time-tracking",
-  "repository": "https://github.com/BrightWayAI/time-tracking",
+  "homepage": "https://github.com/BrightWayAI/admin",
+  "repository": "https://github.com/BrightWayAI/admin",
   "keywords": [
     "nucleus",
     "chatgpt",
@@ -25,7 +25,7 @@
       "Read",
       "Write"
     ],
-    "websiteURL": "https://github.com/BrightWayAI/time-tracking",
+    "websiteURL": "https://github.com/BrightWayAI/admin",
     "defaultPrompt": [
       "Track yesterday's billable time.",
       "Generate this month's invoice drafts.",
