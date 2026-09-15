@@ -34,7 +34,7 @@ Saved to `<config-root>/plugins/admin.user-context.md`.
 
 - **Client Success** — provides engagement data (client name, contract value, deliverables, start/end dates). When configured, Admin imports billing context rather than re-asking.
 - **`cortex`** — captures time-related observations ("Acme calls always run 15 min over") into memory.
-- **`ops`** — pipeline-analyst can surface deal value alongside billable time for a "where am I making money vs. spending time" view.
+- **`growth`** — pipeline-analyst can surface deal value alongside billable time for a "where am I making money vs. spending time" view; if not installed, note "Growth Engine not installed; pipeline analysis skipped."
 - **Anthropic skills (`invoice`, `docx`)** — `/invoices` can hand off to these for final invoice document production.
 
 Works without companions, but the integrations make billing more accurate.

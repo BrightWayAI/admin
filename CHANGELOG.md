@@ -4,6 +4,11 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.4.0] — pipeline-analyst ownership moved to growth (2026-09-15)
+
+### Changed
+- `pipeline-analyst` now lives in the `growth` plugin (moved from `ops`). README updated to reference `growth` and report "Growth Engine not installed; pipeline analysis skipped" when growth isn't present.
+
 ## [0.3.0] — Renamed to Admin; /invoices primary command (2026-09-15)
 
 Renamed from `time-tracking` to `admin` (display name: Admin) as part of the

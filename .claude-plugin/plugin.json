@@ -1,6 +1,6 @@
 {
   "name": "admin",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Admin. Calendar-driven time tracking and invoice generation. Pulls calendar events, classifies billable time per client/project (using Delivery engagements when available), logs to a local file at <config-root>/time-log.csv, and produces invoices at month-end. Closes the calendar-to-money loop most consultants leave on the table.",
   "author": {
     "name": "BrightWay AI"
