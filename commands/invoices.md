@@ -1,147 +1,164 @@
 ---
-description: Admin. Generate monthly invoices from the time log. Reads <config-root>/time-log.csv for the target month, groups by client, calculates totals against each client's billing model, and produces invoice drafts. Hands off to the anthropic-skills:invoice or docx skill for final document generation, or outputs structured invoice data inline. Run on the 1st of the month for the prior month. Formerly `/generate-invoices` (kept as a deprecated alias).
+description: Admin. Generate a billing packet for the accountant/bookkeeper — not client-facing invoices. For each active project, applies its billing-register line items and billing rules to the period (default current month), pulls hours from the time log for hourly lines, validates before drafting, and produces one section per invoice plus an hours-log attachment, ready for your accountant to key into the accounting system. Drafts the handoff email; sends only on explicit approval. The old client-facing invoice-document path (anthropic-skills:invoice / docx) is still available behind `--legacy-documents` or the `Legacy invoice documents` setting, but is no longer the default. Formerly `/generate-invoices` (kept as a deprecated alias).
 ---
 
 # /invoices
 
-Monthly invoice generation. Closes the calendar → time-log → money loop.
+Monthly (or ad hoc) billing packet generation. Turns the register + time log into
+complete, correct inputs for your accountant — not final invoices sent to clients.
 
 ---
 
 ## Step 0 — Preflight
 
-Read `<config-root>/plugins/admin.user-context.md`. Extract:
-- Active clients + billing models (hourly rate / retainer / flat fee)
-- Invoice preferences (template, due-on-receipt vs net-30, delivery channel)
-- Time-log file path (default `<config-root>/time-log.csv`)
+Read `<config-root>/plugins/admin.user-context.md`. Require:
+- Billing register backend configured (if not, route to `/setup-time` then
+  `/seed-register`)
+- Accountant recipients + packet format under
+  `## Billing packet / accountant handoff`
 
-If `<config-root>/plugins/clients.user-context.md` exists, also read it for current contract values and engagement names.
+Read the billing register (Customers, Projects, Line Items, Cost Assignments,
+Billing Packets log) from the configured backend.
 
----
-
-## Step 1 — Determine the period
-
-Default: previous month (e.g., if today is May 1, target = April).
-
-User can override: `/invoices 2026-04` for April 2026.
-
-Announce: "Generating invoices for [Month YYYY]."
-
----
-
-## Step 2 — Read the time log
-
-Open `<config-root>/time-log.csv`. Filter to:
-- Rows where `date` is within the target month
-- Rows where `billable` = true
-- Rows where `invoiced` = false (not already billed)
-
-Group by `client`.
+If `--legacy-documents` is passed, or `## Billing packet / accountant handoff`'s
+`Legacy invoice documents` is `on`, also run the old client-facing invoice-document
+path from `references/templates/invoice-template.md` — see **Legacy path** at the
+bottom. It runs in addition to, never instead of, the billing packet below unless
+the register itself isn't configured, in which case it's the only thing this
+command can do.
 
 ---
 
-## Step 3 — Calculate per client
+## Step 1 — Determine the period and validate
 
-For each client:
+Default period: current month. `/invoices 2026-10` for a specific month.
+`/invoices --adhoc <project>` for a single project, any period boundary the
+project's own schedule implies.
 
-### Hourly billing
-- Sum `duration_min` for the month
-- Convert to hours (round per user-context rounding rule)
-- Multiply by hourly rate from user-context
-- Itemize line items by project (or by week if many entries)
+Before drafting anything, validate the register + time log and surface issues at
+the top of the output, not buried:
 
-### Retainer
-- Confirm retainer amount from user-context (flat monthly fee)
-- Note hours used vs. retainer cap (if cap exists)
-- If hours > cap: flag overage, calculate per overage rate (if defined)
+- **Missing or duplicate installments** — an `installment_x_of_n` line item
+  whose `n` has already been billed, or whose prior installments are missing
+- **Hours against fixed-fee projects** — time-log rows tagged to a project whose
+  billing model isn't `hourly`/`per_unit`
+- **Lines past the project end date** — a line item billing in a period after
+  its project's `end_date`
+- **Names that don't match the register** — a time-log `client`/`project` value
+  with no matching register record, or an `accounting_product_service` that
+  doesn't match the catalog exactly
+- **Unconfirmed rates** — any line item or field still marked
+  `NEEDS CONFIRMATION`
 
-### Flat fee project
-- Reference Client Success's contract value
-- If invoicing is milestone-based: identify which milestone closed this period and bill accordingly
-- Otherwise: bill the agreed-upon monthly portion (e.g., contract / engagement-duration months)
-
----
-
-## Step 4 — Draft invoices
-
-For each client, prefer the user-owned
-`<config-root>/plugins/admin/templates/invoice-template.md`; otherwise use
-the immutable `references/templates/invoice-template.md` default.
-
-Structure:
-- Invoice number (auto-increment from last invoiced number — track in user-context or derive from time-log)
-- Date issued + due date (per net terms)
-- Client info (name, billing email/address — from Client Success or Admin user-context)
-- Your info (from `<config-root>/memory/me/identity.md`)
-- Line items (per Step 3 calculation)
-- Subtotal, taxes if applicable, total
-- Payment terms + payment instructions (from user-context)
-- Notes / scope reference (e.g., "Per SOW dated [date]")
+Each issue blocks only the affected line, not the whole packet — unaffected
+projects still draft normally. List every blocked line with its reason.
 
 ---
 
-## Step 5 — Hand off or output
+## Step 2 — Determine what bills this period
 
-The plugin doesn't produce final PDF/docx itself. Two options:
+For each active Project:
 
-### Option A — Hand off to anthropic-skills:invoice (recommended if user has it)
+- **`monthly_during_term`** — bills if the period falls within
+  `start_date`–`end_date`
+- **`installment_x_of_n`** — bills if this period is the next unbilled
+  installment (check the Billing Packets log for prior installments)
+- **`actual_hours`** — bills if the time log has billable, unflagged hours
+  against this project for the period
+- **`on_milestone_acceptance`** — bills only if the user confirms the milestone
+  was accepted this period (ask)
 
-If the user has `anthropic-skills:invoice` available, pass the structured invoice data and let that skill produce the final branded document. Mention to user:
+For `actual_hours` lines, pull time-log rows where `client`/`project` match,
+`billable = true`, `invoiced = false`, and `date` falls in the period.
 
-> "Drafts ready. Want me to hand off to the `invoice` skill to generate branded .docx files? (Y/N)"
-
-### Option B — Output structured data inline
-
-If no invoice skill is available, output the structured invoice data as markdown for the user to review and copy into their billing tool of choice (QuickBooks, Wave, Stripe, manual emails).
-
----
-
-## Step 6 — Confirm and update time-log
-
-After invoices are drafted (and ideally sent), prompt:
-
-> "Mark these time-log rows as invoiced? (Y/N) — sets `invoiced=true` so they're not double-billed next month."
-
-If yes: update the corresponding rows in `<config-root>/time-log.csv`. This is the only mutation the plugin makes to existing rows.
+Projects with nothing billing this period are listed separately with the reason
+(e.g. "no accepted milestone this period", "outside active dates", "no hours
+logged").
 
 ---
 
-## Step 7 — Output summary
+## Step 3 — Draft the packet
+
+One section per invoice (one per Project that bills this period):
 
 ```
-Invoices generated for [Month YYYY]:
+CUSTOMER: [accounting_name]
+PROJECT: [accounting_name]
+TERMS: [terms]
+SERVICE PERIOD: [period]
 
-| Client      | Hours / Type | Amount     | Due       |
-|-------------|--------------|------------|-----------|
-| Acme Corp   | 24 hrs hourly| $X,XXX     | [date]    |
-| Beta Inc    | Retainer     | $X,XXX     | [date]    |
-| Gamma Co    | Milestone 2  | $X,XXX     | [date]    |
-                                            
-**Total: $XX,XXX**
+| Product/Service          | Description                | Qty  | Rate    | Amount  |
+|---------------------------|-----------------------------|------|---------|---------|
+| [accounting_product_service] | [invoice_description]  | [qty]| $[rate] | $[amt]  |
 
-Time-log: [N] rows marked invoiced.
-[If anthropic-skills:invoice was used] Drafts in [Drive folder / local path]. Review before sending.
+**Invoice total: $[X,XXX]**
 ```
+
+After all sections:
+
+```
+**Period total: $[XX,XXX]**
+
+Not billing this period:
+- [Project] — [reason]
+- [Project] — [reason]
+```
+
+For every hourly line item included, attach a detailed hours log: date, person,
+hours, description, project — so the accountant can mark time billable and apply
+it against the right invoice.
+
+---
+
+## Step 4 — Draft the email
+
+Draft (never send) an email to the accountant recipients, with the packet in the
+configured format (email text / .xlsx attachment / shared register view — default
+email + .xlsx). Attach the hours log for hourly lines.
+
+---
+
+## Step 5 — Confirm and finalize
+
+Show the full draft (validation issues, packet, not-billing list, email). Ask for
+explicit approval to send. On approval:
+
+- Send the email.
+- Write a Billing Packets record: period, projects included, total, date sent,
+  status `sent`, notes.
+- Mark the corresponding `time-log.csv` rows `invoiced = true` — **only after**
+  the user confirms the packet was sent. This is the only place `/invoices`
+  mutates existing rows.
+
+If the user doesn't approve sending, write the Billing Packets record with status
+`drafted` and leave time-log rows unmarked — safe to re-run.
 
 ---
 
 ## Behavior rules
 
-- **Never double-bill.** Always check `invoiced` flag before including a row.
-- **Surface anomalies.** If a client has unusual hours (e.g., 80 hrs in a month vs. typical 30), flag for review before generating.
-- **Honor billing model.** Don't generate hourly invoices for retainer clients, even if the time log shows hours.
-- **Don't auto-send.** Always require user confirmation before invoices go out. The plugin produces drafts; the user reviews and sends.
-- **Idempotent.** Running `/invoices` twice for the same month should produce the same output (because rows already marked `invoiced=true` are skipped).
+- **Never double-bill.** `invoiced = true` rows and already-billed installments
+  are always excluded.
+- **Validate before drafting, not after.** Issues surface at the top, before the
+  packet body.
+- **Every line traces to a register record.** No line item is invented from the
+  time log alone — if a time-log project has no register entry, it's a validation
+  issue, not a silent invoice line.
+- **Don't auto-send.** Drafts only; explicit approval required.
+- **Idempotent.** Re-running for an already-sent period reproduces the same
+  "nothing new to bill" result for already-billed lines.
 
-## Edge cases
+## Out of scope
 
-- **Time-log file missing or empty** — say so, recommend running `/track-time` first.
-- **Client in time-log but not in user-context** — flag, ask user to add the client to setup before invoicing.
-- **Hours = 0 for an active retainer client** — still generate the retainer invoice; flag in notes that no hours were tracked (which may be fine for retainer or may indicate forgotten time).
-- **Mid-month engagement starts/ends** — pro-rate flat fees if user-context says so; otherwise use full month.
+- Transaction coding, payment tracking, sending invoices to clients — those stay
+  with the accountant and the accounting system.
 
-## What this is NOT for
+## Legacy path — client-facing invoice documents
 
-- **Sending invoices.** The plugin drafts; the user sends (manually or via their billing tool).
-- **Payment tracking.** Once invoiced, the plugin doesn't track payment status. Use your accounting tool for that.
-- **Tax calculation.** Surface taxable amounts per user-context, but don't compute tax tables for jurisdictions.
+When enabled (`--legacy-documents` or the user-context setting), also run the
+pre-register workflow: group time-log rows by client, apply each client's billing
+model from `## Clients and billing`, and hand off to `anthropic-skills:invoice`
+(or output structured markdown inline) using
+`references/templates/invoice-template.md`. This produces client-facing invoice
+documents, not an accountant packet, and does not touch the billing register. Off
+by default — most users want the packet above, not self-generated invoices.

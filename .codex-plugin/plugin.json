@@ -1,7 +1,7 @@
 {
   "name": "admin",
-  "version": "0.4.1",
-  "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+  "version": "0.5.0",
+  "description": "Turn calendar events into a local, reviewable time log and generate a billing packet for your accountant from a configurable billing register, seeded from your accounting system and signed contracts.",
   "author": {
     "name": "BrightWay AI",
     "url": "https://brightwayai.com"
@@ -17,8 +17,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Admin",
-    "shortDescription": "Classify calendar time and prepare reviewable invoices",
-    "longDescription": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+    "shortDescription": "Classify calendar time and prepare accountant billing packets",
+    "longDescription": "Turn calendar events into a local, reviewable time log and generate a billing packet for your accountant from a configurable billing register, seeded from your accounting system and signed contracts.",
     "developerName": "BrightWay AI",
     "category": "Business",
     "capabilities": [
@@ -28,8 +28,8 @@
     "websiteURL": "https://github.com/BrightWayAI/admin",
     "defaultPrompt": [
       "Track yesterday's billable time.",
-      "Generate this month's invoice drafts.",
-      "Configure my billing rules."
+      "Generate this month's billing packet.",
+      "Seed my billing register."
     ]
   }
 }

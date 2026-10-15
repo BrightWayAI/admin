@@ -47,3 +47,17 @@ _Last updated: [filled by setup]_
 
 ## Time-log location
 - **File:** [default `<config-root>/time-log.csv`]
+
+## Billing register
+- **Backend:** [local files (default) / Airtable]
+- **Location:** [`<config-root>/plugins/admin-register/` (default for local) / Airtable base — stored here only, never in plugin code]
+- **Accounting connector:** [none / QuickBooks / other — used by `/seed-register`]
+- **Contract location:** [path or Drive location `/seed-register` reads signed contracts from]
+
+## Billing packet / accountant handoff
+- **Accountant recipients — to:** [name, email]
+- **Accountant recipients — cc:** [names, emails]
+- **Packet format:** [email text / .xlsx attachment / shared register view — default email + .xlsx]
+- **Prep day:** [day of month to prepare the packet, e.g. 1st]
+- **Send day:** [day of month to send, e.g. 3rd — gives time to review before sending]
+- **Legacy invoice documents:** [on / off — default off; when on, `/invoices` also produces the old client-facing invoice documents via `references/templates/invoice-template.md`]

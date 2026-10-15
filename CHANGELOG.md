@@ -4,6 +4,22 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.5.0] — Billing register and accountant handoff (2026-10-15)
+
+### Added
+- **Billing register** — new generic schema (`references/register-schema.md`) for Customers, Projects, Line Items (billable catalog), Cost Assignments, and a Billing Packets log. Backend is user-chosen: local CSV/markdown files under `<config-root>/plugins/admin-register/` (default) or Airtable via connector. Schema lives in the plugin; data never does.
+- `/seed-register` (new command + skill) — one-time or occasional re-run that pulls customers, projects/sub-customers, and the product/service catalog from a configured accounting connector (QuickBooks first, structured to add others later), reads signed contracts from a configured location, and drafts register records for user confirmation. Never guesses a rate, term, or accounting name — unclear fields are marked `NEEDS CONFIRMATION`.
+- `/setup-notice` (new command + skill) — manual trigger for the new-customer/project setup-notice workflow, built on new shared logic at `references/setup-notice-generation.md`. Also invoked automatically by `clients:project-setup` when a contract executes (clients 0.8.1+).
+- `/setup-time` Step 7.5 — captures register backend, accounting connector, contract location, accountant recipients, packet format, prep/send days, and a legacy-invoice-documents toggle. Offers `ops:register-schedules` registration using the captured prep/send days.
+
+### Changed
+- **`/invoices` reworked into a billing-packet generator.** Default output is now an accountant handoff packet built from the billing register — one section per invoice (customer/project exact accounting-system names, terms, period, line items, totals), a not-billing-this-period list with reasons, and an hours-log attachment for hourly lines. A validation pass runs first and surfaces missing/duplicate installments, hours against fixed-fee projects, lines past a project's end date, register/time-log name mismatches, and unconfirmed rates at the top of the draft, before the packet body. Still draft-only; still requires explicit approval before sending and before marking time-log rows `invoiced`.
+- The prior client-facing invoice-document path (grouping by client's billing model, handing off to `anthropic-skills:invoice` / the local invoice template) is preserved behind `--legacy-documents` or the `Legacy invoice documents` user-context setting — no longer the default.
+- `references/user-context.template.md` gains `## Billing register` and `## Billing packet / accountant handoff` sections.
+
+### Scope
+- Out of scope, per design: transaction coding, payment tracking, sending invoices to clients.
+
 ## [0.4.1] — OpenAI host adapter (2026-09-14)
 
 ### Added

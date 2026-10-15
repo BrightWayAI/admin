@@ -52,7 +52,7 @@ redirected to another store.
 
 ## Plugin-specific degradation
 
-A calendar connector is optional: accept pasted events when absent. Generate Markdown or structured invoice data if document tooling is unavailable. Never send invoices automatically.
+A calendar connector is optional: accept pasted events when absent. An accounting connector (for /seed-register) and Airtable (for the register backend) are also optional: fall back to local files and manual entry, marking unconfirmed fields NEEDS CONFIRMATION rather than guessing. Generate Markdown or structured packet data if document tooling is unavailable. Never send invoices or the accountant packet automatically.
 
 Always report unavailable or skipped capabilities in the result. A degraded run must
 remain useful where possible, but it must never imply that missing data was read or an

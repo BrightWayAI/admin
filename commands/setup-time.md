@@ -107,6 +107,36 @@ Note: padding is opinionated. Some clients accept it, others don't. Default off.
 
 ---
 
+## Step 7.5 — Billing register and accountant handoff
+
+This is what lets `/invoices` produce an accountant packet instead of
+client-facing invoice documents. Ask:
+
+- **Register backend** — local files (default, under
+  `<config-root>/plugins/admin-register/`) or Airtable (via connector, if
+  available — ask for a base name, not an ID; the base identifier itself is
+  resolved and stored in user-context, never captured here as plugin content)
+- **Accounting connector** — none, or which one (QuickBooks first; others can be
+  added later) — used by `/seed-register`
+- **Contract location** — where signed contracts live, for `/seed-register` and
+  `/setup-notice`
+- **Accountant recipients** — to / cc, for the packet handoff email
+- **Packet format** — email text / .xlsx attachment / shared register view
+  (default email + .xlsx)
+- **Prep day** — day of month to prepare the packet (default: 1st)
+- **Send day** — day of month to send, after review (default: 3rd)
+- **Legacy invoice documents** — on/off (default off). Only turn on if the user
+  still wants `/invoices` to also produce client-facing invoice documents via
+  `references/templates/invoice-template.md`.
+
+If a register backend is chosen, mention: "Run `/seed-register` next to pull your
+existing customers, projects, and product/service catalog instead of entering
+everything by hand."
+
+See `references/register-schema.md` for what each entity captures.
+
+---
+
 ## Step 8 — Write the config
 
 Populate `<config-root>/plugins/admin.user-context.md` with everything captured. Use the `references/user-context.template.md` structure.
@@ -117,7 +147,11 @@ Populate `<config-root>/plugins/admin.user-context.md` with everything captured.
 
 Summarize. Offer:
 
-> "Setup done. Try `/track-time` for yesterday — see how the classification goes. Refine setup later if anything's off."
+> "Setup done. Try `/track-time` for yesterday — see how the classification goes. If you configured a billing register, run `/seed-register` to bootstrap it from your accounting system and contracts. Refine setup later if anything's off."
+
+If a register backend was configured, also offer to register a schedule through
+`ops:register-schedules` using the prep/send days just captured (skip if `ops`
+isn't installed, or the user declines).
 
 ---
 
