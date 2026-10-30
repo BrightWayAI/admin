@@ -49,7 +49,7 @@ Standard CSV quoting:
 
 ### Backups
 
-The file is plain text — back up however you back up `~/Documents/Claude/`. Cortex memory and identity also live in that directory, so a single backup covers your whole marketplace plugin state.
+The file is plain text — back up however you back up your Cortex config root (`~/cortex-root` by default). Cortex memory and identity also live in that directory, so a single backup covers your whole marketplace plugin state.
 
 ### Future fields (v0.2+)
 

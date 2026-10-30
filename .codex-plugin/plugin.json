@@ -1,6 +1,6 @@
 {
   "name": "admin",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Turn calendar events into a local, reviewable time log and generate a billing packet for your accountant from a configurable billing register, seeded from your accounting system and signed contracts.",
   "author": {
     "name": "BrightWay AI",

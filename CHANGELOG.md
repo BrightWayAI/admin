@@ -4,6 +4,11 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.5.1] — Config-root guard (2026-10-30)
+
+### Changed
+- `/track-time`, `/invoices` start with a config-root guard: if the root is unreachable (for example a cloud session with no folder attached) they stop with the plain-English fix instead of writing a partial result elsewhere. Unreachable config root is now detected and explained at every entry point (cloud sessions especially).
+
 ## [0.5.0] — Billing register and accountant handoff (2026-10-15)
 
 ### Added
