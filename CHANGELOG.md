@@ -4,6 +4,11 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.6.1] — Plain plugin names (2026-11-16)
+
+### Changed
+- Docs and `/setup-time` refer to "the clients plugin" instead of Client Success. No behavior change.
+
 ## [0.6.0] — Independent check for invoice packets (2026-11-16)
 
 ### Added

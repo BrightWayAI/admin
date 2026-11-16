@@ -6,7 +6,7 @@ Admin pulls calendar events to classify billable time and produce monthly invoic
 
 **Reads:**
 - **Calendar** — events in the target window (yesterday / last week / specified range). Captures: date, start/end, duration, title, attendees, description.
-- **Client Success settings** (if configured) — engagement data (client names, contract values, project tags) for billing context.
+- **the clients plugin settings** (if configured) — engagement data (client names, contract values, project tags) for billing context.
 - **Time log** — `<config-root>/time-log.csv` by default for `/invoices` and deduplication.
 - **Plugin settings and templates** — `<config-root>/plugins/admin.user-context.md`, optional user template override, and the immutable bundled starter.
 - **Shared private profile** — `<config-root>/memory/me/identity.md` (read-only).
