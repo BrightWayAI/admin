@@ -28,9 +28,9 @@ For the rest of this document, **`<config-root>`** refers to the resolved path. 
 Read `<config-root>/plugins/admin.user-context.md`. Populated → ask whether to update or restart. Missing → fresh interview.
 
 If `<config-root>/plugins/clients.user-context.md` has populated engagements, offer:
-> "I see active Client Success engagements: [list]. Want to import those as billing-tracked clients? I'll just need rates and billing models for each."
+> "I see active engagements in the clients plugin: [list]. Want to import those as billing-tracked clients? I'll just need rates and billing models for each."
 
-If yes → use Client Success data as the client list, ask for billing models per client. If no → capture clients fresh in Section 2.
+If yes → use the clients plugin data as the client list, ask for billing models per client. If no → capture clients fresh in Section 2.
 
 ---
 
@@ -38,7 +38,7 @@ If yes → use Client Success data as the client list, ask for billing models pe
 
 For each active client, capture:
 
-- **Client name** (matches the name in your CRM and Client Success config)
+- **Client name** (matches the name in your CRM and the clients plugin config)
 - **Client domain(s)** (for attendee-domain matching, e.g., `acme.com`)
 - **Project tag** in calendar (e.g., `[ACME]` prefix in event titles, or a project name)
 - **Billing model** — pick one:
@@ -160,4 +160,4 @@ isn't installed, or the user declines).
 - One section at a time. Don't flood.
 - Capture clients one at a time — important to get the rates right.
 - Idempotent. Re-running adds new clients or updates existing ones.
-- If Client Success is configured, prefer importing client data from there to avoid drift.
+- If the clients plugin is configured, prefer importing client data from there to avoid drift.
