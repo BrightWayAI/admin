@@ -7,7 +7,7 @@ The pain: you do the work, your calendar reflects it, and then you either spend 
 ## What it does
 
 1. **`/track-time`** (daily or weekly) — pulls calendar events, classifies each as billable / non-billable / unknown by client, prompts for confirmation, and logs to `<config-root>/time-log.csv` by default.
-2. **`/invoices`** (monthly) — reads the time log, groups by client, calculates totals against your billing model, drafts invoices. Hands off to your existing invoice tool (e.g., `anthropic-skills:invoice`) or generates docx/pdf directly. (`/generate-invoices` is a deprecated alias that delegates here.)
+2. **`/invoices`** (monthly) — reads the time log, groups by client, calculates totals against your billing model, drafts invoices. Hands off to your existing invoice tool (e.g., `anthropic-skills:invoice`) or generates docx/pdf directly. (`/generate-invoices` is a deprecated alias that delegates here.) Since 0.6.0 the packet is checked against the billing register and time log by the cortex `verifier` agent before you approve it; a failed line is blocked and shown with the evidence.
 
 ## Install
 

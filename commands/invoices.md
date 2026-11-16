@@ -122,9 +122,41 @@ email + .xlsx). Attach the hours log for hourly lines.
 
 ---
 
+## Step 4.5 — Independent check (v0.6.0+)
+
+Before asking for approval, have the cortex `verifier` agent check the packet against
+the billing register and the time log. Step 1 validates the inputs; this step checks
+that the packet says what the inputs say.
+
+1. **List the claims.** One per invoice line: customer, project, product/service,
+   quantity, rate, amount, and service period. Add one claim per invoice total, one for
+   the period total, and one per "not billing this period" reason.
+2. **Cite sources.** The billing register and `time-log.csv` are files; cite them by
+   path with the record or row. If the register was read through a connector, save the
+   records used to a temporary file outside `<config-root>` and cite that.
+3. **Invoke `verifier`** with the claims and sources, and with the Billing Packets log
+   as reference material so an installment already billed is caught. Do not pass your
+   working or the Step 1 issue list.
+4. **Arithmetic is not the verifier's job.** Recompute every amount (quantity × rate),
+   every invoice total, and the period total yourself and show the sums. Hours on an
+   hourly line must equal the sum of the attached hours-log rows.
+5. **Show the result at the top of the Step 5 draft**, next to the validation issues:
+   the counts, then every `fail` and `unverifiable` line with the evidence. A failed
+   line is blocked the same way a Step 1 issue blocks a line: the rest of the packet
+   can still go, and the blocked line is listed with its reason.
+6. **Do not silently fix.** A correction is the user's call; after it, re-check the
+   changed lines.
+7. **If cortex is not installed or the verifier fails,** print "Not independently
+   checked: <reason>" at the top of the draft. Never state or imply it was checked.
+
+Delete any temporary files when the step is done. A clean check does not approve the
+send: Step 5 still requires explicit approval.
+
+---
+
 ## Step 5 — Confirm and finalize
 
-Show the full draft (validation issues, packet, not-billing list, email). Ask for
+Show the full draft (validation issues, the Step 4.5 check result, packet, not-billing list, email). Ask for
 explicit approval to send. On approval:
 
 - Send the email.

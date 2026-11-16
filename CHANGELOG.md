@@ -4,6 +4,16 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.6.0] — Independent check for invoice packets (2026-11-16)
+
+### Added
+- `/invoices` Step 4.5: the cortex `verifier` agent checks every packet line against the billing register and the time log, with the Billing Packets log as reference so an installment already billed is caught. The command recomputes the arithmetic itself. A failed line is blocked and shown with the evidence; nothing is corrected without the user.
+- Without cortex the packet is labeled "Not independently checked".
+- Eval `invoices-independent-check` (the plugin's first eval).
+
+### Not changed
+- Sending still requires explicit approval in Step 5.
+
 ## [0.5.2] — Cloud config-root portability (2026-10-30)
 
 ### Fixed
