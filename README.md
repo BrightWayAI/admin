@@ -1,13 +1,15 @@
 # Admin
 
-Calendar-driven time tracking and invoice generation for solo consultants and small agencies.
+Calendar-driven time tracking and month-end billing packets for solo consultants and small agencies.
 
-The pain: you do the work, your calendar reflects it, and then you either spend an hour at month-end manually reconstructing billable time, or you forget and undercount. This plugin closes the loop. Pull calendar daily/weekly, classify by client, log to a simple file, generate invoices at month-end.
+The pain: you do the work, your calendar reflects it, and then you either spend an hour at month-end manually reconstructing billable time, or you forget and undercount. This plugin closes the loop. Pull calendar daily/weekly, classify by client, log to a simple file, and hand your accountant a complete, checked billing packet at month-end.
 
 ## What it does
 
 1. **`/track-time`** (daily or weekly) — pulls calendar events, classifies each as billable / non-billable / unknown by client, prompts for confirmation, and logs to `<config-root>/time-log.csv` by default.
-2. **`/invoices`** (monthly) — reads the time log, groups by client, calculates totals against your billing model, drafts invoices. Hands off to your existing invoice tool (e.g., `anthropic-skills:invoice`) or generates docx/pdf directly. (`/generate-invoices` is a deprecated alias that delegates here.) Since 0.6.0 the packet is checked against the billing register and time log by the cortex `verifier` agent before you approve it; a failed line is blocked and shown with the evidence.
+2. **`/invoices`** (monthly) — builds a billing packet for your accountant or bookkeeper, not client-facing invoices. For each active project it applies the billing register's line items and rules to the period, pulls hours from the time log for hourly lines, and produces one section per invoice plus an hours-log attachment. It drafts the handoff email and sends only when you approve. The packet is checked against the billing register and time log by the cortex `verifier` agent before you approve it; a failed line is blocked and shown with the evidence. Client-facing invoice documents are still available with `--legacy-documents`. (`/generate-invoices` is a deprecated alias.)
+3. **`/seed-register`** (once, or to refresh) — fills the billing register from your accounting system (customers, projects, product and service catalog) and your signed contracts.
+4. **`/setup-notice`** (per new client or project) — drafts billing-register records from a signed contract, produces a setup sheet for your accountant, and drafts the handoff email. Never sends. Clients's `/project-setup` runs the same logic at kickoff.
 
 ## Install
 
@@ -35,7 +37,7 @@ Saved to `<config-root>/plugins/admin.user-context.md`.
 - **the clients plugin** — provides engagement data (client name, contract value, deliverables, start/end dates). When configured, Admin imports billing context rather than re-asking.
 - **`cortex`** — captures time-related observations ("Acme calls always run 15 min over") into memory.
 - **`growth`** — pipeline-analyst can surface deal value alongside billable time for a "where am I making money vs. spending time" view; if not installed, note "Growth not installed; pipeline analysis skipped."
-- **Anthropic skills (`invoice`, `docx`)** — `/invoices` can hand off to these for final invoice document production.
+- **Anthropic skills (`invoice`, `docx`)** — used only by `/invoices --legacy-documents` for client-facing invoice documents.
 
 Works without companions, but the integrations make billing more accurate.
 
@@ -45,16 +47,18 @@ Works without companions, but the integrations make billing more accurate.
 .claude-plugin/plugin.json
 commands/
   track-time.md             Daily/weekly calendar → time-log
-  invoices.md               Monthly time-log → invoice drafts
+  invoices.md               Monthly register + time-log → billing packet
+  seed-register.md          Fill the billing register from accounting + contracts
+  setup-notice.md           New client/project setup notice for the accountant
   generate-invoices.md      Deprecated alias → /invoices
   setup-time.md             Interview
 skills/
-  track-time/SKILL.md       Auto-fires on time-tracking phrases
-  invoices/SKILL.md         Auto-fires on invoice phrases
+  <one per command>/SKILL.md  Fires the matching command from plain language
   setup/SKILL.md            Auto-fires on setup phrases
 references/
   user-context.template.md  Structure (committed)
-  user-context.md           Your config (gitignored, created by setup)
+  register-schema.md        The billing register format
+  setup-notice-generation.md  How setup notices are built
   time-log-schema.md        Documentation of the time-log file format
   templates/
     invoice-template.md     Immutable starter invoice template

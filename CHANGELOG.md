@@ -4,6 +4,11 @@ All notable changes to time-tracking are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versions match `plugin.json`.
 
+## [0.6.2] — README refresh (2026-11-17)
+
+### Changed
+- README brought up to date: `/invoices` described as the accountant billing packet it is, `/seed-register` and `/setup-notice` listed, and the current file tree. Documentation only; no behavior change.
+
 ## [0.6.1] — Plain plugin names (2026-11-16)
 
 ### Changed
